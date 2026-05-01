@@ -6,16 +6,6 @@ A working design system for **Reva** — distilled from the production codebases
 
 Reva is **the intelligent financial account for modern wealth** — a client-owned, adviser-governed account that runs a household's financial life as one. Cash, credit, FX, and investments operate through the same account, coordinated by a deterministic orchestration engine against the household's goals and constraints.
 
-The product surface area today:
-
-| Surface | Audience | Status | Tech |
-| --- | --- | --- | --- |
-| **Marketing site** (`reva-website`) | Prospective firms, founding community | Live | Vite + PostHTML + PostCSS |
-| **Advisor Portal** | Advisers running households | Scaffolded | React 19 + Vite + Tailwind v4 + shadcn/ui |
-| **Client Portal** | End-clients (white-labelled per firm) | Planned | React 19 + Vite |
-| **Auth** | Shared login / signup / 2FA | Live | React + Vite |
-| **Docs** | Internal kitchen-sink for `@reva/ui` | Live | Next.js + Fumadocs |
-
 Public-facing voice, taken from `reva-website` copy:
 
 > **Intelligent orchestration for modern advice.**
@@ -45,6 +35,17 @@ All material in this design system was extracted from these repos. They are not 
 | `ui_kits/website/` | Recreated marketing-site UI kit (hero, vision card, benefits, infrastructure, founding community, footer). |
 | `ui_kits/advisor-portal/` | Recreated advisor-portal UI kit (sidebar, dashboard cards, household table, treasury). |
 | `_src/` | Reference source files copied from the codebase for fidelity-checking (not used directly). |
+
+---
+
+## Getting started
+
+```bash
+git clone https://github.com/reva-platform/claude-design-system.git
+cd claude-design-system
+```
+
+Open `ui_kits/website/UI Kit - Marketing.html` or `ui_kits/advisor-portal/UI Kit - Advisor Portal.html` directly in a browser — no build step needed. All CSS tokens and self-hosted fonts are referenced by relative paths, so prototypes work immediately once the folder is cloned. Read `README.md` for brand context, then `SKILL.md` if you're loading this into a Claude Code agent.
 
 ---
 
