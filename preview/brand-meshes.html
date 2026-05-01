@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Mesh gradients</title>
+<link rel="stylesheet" href="../colors_and_type.css?v=20260428">
+<style>
+  body{margin:0;padding:22px 24px 96px;background:var(--reva-porcelain);color:var(--olive-900);font-family:var(--font-sans)}
+  .note{font-size:12px;color:var(--olive-600);margin:0 0 24px;max-width:680px;line-height:1.55}
+  .note code{font-family:var(--font-mono);font-size:11px;background:rgba(138,125,66,0.08);padding:1px 5px;border-radius:3px;color:var(--olive-800)}
+  .group{margin-bottom:32px}
+  .group-head{display:flex;align-items:baseline;gap:14px;margin:0 0 14px;padding-bottom:10px;border-bottom:1px solid var(--olive-200)}
+  .lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--olive-500);margin:0}
+  .group-desc{font-size:12px;color:var(--olive-600);margin:0;font-style:italic}
+  .grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:18px}
+  .tile{position:relative;aspect-ratio:1400/1000;border-radius:12px;overflow:hidden;background-size:cover;background-position:center;box-shadow:0 1px 0 rgba(24,2,7,0.04), 0 8px 24px -12px rgba(24,2,7,0.18)}
+  .tile.tall{aspect-ratio:7/8}
+  .tile.wide{aspect-ratio:21/9}
+  .tile.square{aspect-ratio:1/1}
+  .name{position:absolute;left:10px;bottom:10px;font-family:var(--font-sans-tight, var(--font-sans));font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:#fff;padding:4px 8px;border-radius:4px;background:rgba(24,2,7,0.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+  .swatches{display:flex;gap:8px;margin:0 0 24px;flex-wrap:wrap}
+  .sw{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-sans-tight, var(--font-sans));font-size:11px;color:var(--olive-700);font-variant-numeric:tabular-nums}
+  .sw::before{content:"";width:10px;height:10px;border-radius:2px;background:var(--c)}
+  .usage{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;margin-top:8px}
+  .usage > .ex{border-radius:14px;overflow:hidden;background-size:cover;background-position:center;min-height:220px;display:flex;flex-direction:column;justify-content:flex-end;padding:24px;color:#fff;position:relative}
+  .usage > .ex::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(24,2,7,0) 40%, rgba(24,2,7,0.55) 100%);pointer-events:none}
+  .usage > .ex > *{position:relative;z-index:1}
+  .usage .overline{font-size:10px;letter-spacing:.12em;text-transform:uppercase;opacity:.85;margin:0 0 6px}
+  .usage .h{font-family:var(--font-heading, var(--font-sans-tight, var(--font-sans)));font-size:24px;line-height:1.15;margin:0 0 6px;letter-spacing:-0.01em}
+  .usage .h em{font-family:var(--font-brand, serif);font-style:italic;font-weight:400}
+  .usage .sub{font-size:13px;opacity:.85;margin:0;line-height:1.4;max-width:30ch}
+  .usage .auth{background-color:var(--reva-porcelain);position:relative;display:flex;align-items:center;justify-content:center;padding:0;color:var(--olive-900)}
+  .usage .auth::before{content:"";position:absolute;inset:0;background-image:var(--mesh);background-size:cover;background-position:center;opacity:.65}
+  .usage .auth::after{display:none}
+  .usage .auth .card{position:relative;z-index:1;background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:14px;padding:24px;width:80%;max-width:300px;box-shadow:0 8px 32px -8px rgba(24,2,7,0.18);border:1px solid rgba(255,255,255,0.6)}
+  .usage .auth .card .h{font-size:18px;color:var(--olive-900)}
+  .usage .auth .card .sub{font-size:12px;color:var(--olive-600)}
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head><body>
+<div id="root"></div>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "shape": "square",
+  "showLabels": true
+}/*EDITMODE-END*/;
+
+const SERIES = [
+  {
+    id: "a",
+    name: "Series A",
+    desc: "High contrast, hard angles. The most editorial — best for hero moments and section dividers.",
+    items: [1,2,3,4,5,6],
+  },
+  {
+    id: "b",
+    name: "Series B",
+    desc: "Saturated and painterly. The workhorse — atmospheric backgrounds for cards, slides, and section interiors.",
+    items: [1,2,3,4,5,6],
+  },
+  {
+    id: "c",
+    name: "Series C",
+    desc: "Muted and dusty. The quietest — soft surrounds for auth screens, founding-community moments, anywhere text needs to breathe.",
+    items: [1,2,3],
+  },
+];
+
+const PALETTE = [
+  { name: "burgundy",   c: "var(--reva-burgundy)" },
+  { name: "amber",      c: "var(--reva-amber)" },
+  { name: "gold",       c: "var(--reva-gold)" },
+  { name: "olive",      c: "var(--reva-olive)" },
+  { name: "deep teal",  c: "var(--reva-deep-teal)" },
+  { name: "porcelain",  c: "var(--reva-porcelain)" },
+];
+
+function Tile({ series, n, shape, showLabels }) {
+  const id = `${series}-${String(n).padStart(2,'0')}`;
+  return (
+    <div className={`tile ${shape}`} style={{backgroundImage:`url(../assets/mesh/${id}.jpg)`}}>
+      {showLabels && <div className="name">{id}</div>}
+    </div>
+  );
+}
+
+function App() {
+  const [tweaks, setTweak] = window.useTweaks(TWEAK_DEFAULTS);
+  const shape = tweaks.shape;
+  const showLabels = tweaks.showLabels;
+
+  return (
+    <>
+      <p className="note">
+        Fifteen hand-picked mesh gradients shipped at 1400×1000 in <code>assets/mesh/</code>.
+        Use as <strong>section backgrounds for emotive moments</strong> — vision, hero, founding-community,
+        auth — never as decoration on every section. All built from the brand's six hues; warm,
+        soft, low-contrast. Reach for series A for boldness, B for atmosphere, C when text sits over the gradient.
+      </p>
+
+      <div className="swatches">
+        {PALETTE.map(p => (
+          <span key={p.name} className="sw" style={{"--c": p.c}}>{p.name}</span>
+        ))}
+      </div>
+
+      {SERIES.map(s => (
+        <div className="group" key={s.id}>
+          <div className="group-head">
+            <h2 className="lbl">{s.name} · {s.items.length} gradients</h2>
+            <p className="group-desc">{s.desc}</p>
+          </div>
+          <div className="grid">
+            {s.items.map(n => (
+              <Tile key={n} series={s.id} n={n} shape={shape} showLabels={showLabels} />
+            ))}
+          </div>
+        </div>
+      ))}
+
+      <div className="group">
+        <div className="group-head">
+          <h2 className="lbl">In context</h2>
+          <p className="group-desc">How they read on real surfaces. Always pair with a darkening overlay when text sits on top.</p>
+        </div>
+        <div className="usage">
+          <div className="ex" style={{backgroundImage:"url(../assets/mesh/a-03.jpg)"}}>
+            <p className="overline">Vision</p>
+            <h3 className="h"><em>We believe</em> the best advisers shouldn't have to choose.</h3>
+            <p className="sub">Section header on Series A — strongest emotional weight.</p>
+          </div>
+          <div className="ex auth" style={{"--mesh": "url(../assets/mesh/c-02.jpg)"}}>
+            <div className="card">
+              <p className="overline" style={{color:"var(--olive-500)"}}>Sign in</p>
+              <h3 className="h">Welcome back.</h3>
+              <p className="sub">Auth pattern on Series C — gentle ground, glass card.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <window.TweaksPanel title="Tweaks">
+        <window.TweakSection title="Preview shape">
+          <window.TweakRadio
+            label="Aspect"
+            value={shape}
+            onChange={v => setTweak('shape', v)}
+            options={[
+              { value: 'native', label: 'Native' },
+              { value: 'wide',   label: 'Wide' },
+              { value: 'tall',   label: 'Tall' },
+              { value: 'square', label: 'Square' },
+            ]}
+          />
+          <window.TweakToggle
+            label="Show file labels"
+            value={showLabels}
+            onChange={v => setTweak('showLabels', v)}
+          />
+        </window.TweakSection>
+      </window.TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body></html>

@@ -1,0 +1,74 @@
+/* ============================================================================
+   Reva — Brand fonts
+   Self-hosted variable fonts (no external CDN). Loaded by colors_and_type.css.
+   ============================================================================ */
+
+/* ---------------- Inter (variable) ---------------- */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("./Inter_-_Variable_Font.ttf") format("truetype-variations"),
+       url("./Inter_-_Variable_Font.ttf") format("truetype");
+}
+
+/* ---------------- Inter Tight (variable) ---------------- */
+@font-face {
+  font-family: "Inter Tight";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("./Inter_Tight_-_Variable_Font.ttf") format("truetype-variations"),
+       url("./Inter_Tight_-_Variable_Font.ttf") format("truetype");
+}
+
+/* ---------------- Playfair Display (variable, roman + italic) ---------------- */
+@font-face {
+  font-family: "Playfair Display";
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url("./Playfair_Display_-_Variable_Font.ttf") format("truetype-variations"),
+       url("./Playfair_Display_-_Variable_Font.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Playfair Display";
+  font-style: italic;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url("./Playfair_Display_-_Italic_-_Variable_Font.ttf") format("truetype-variations"),
+       url("./Playfair_Display_-_Italic_-_Variable_Font.ttf") format("truetype");
+}
+
+/* ---------------- Geist Mono (variable) ---------------- */
+@font-face {
+  font-family: "Geist Mono";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("./Geist_Mono.ttf") format("truetype-variations"),
+       url("./Geist_Mono.ttf") format("truetype");
+}
+
+/* ---------------- Force-load all brand families ----------------
+   Detectors check that declared brand fonts have actually been
+   downloaded. The browser only fetches the FIRST resolvable family
+   in a font-family list, so each family needs its own pseudo or
+   element. We chain them across html::before, html::after,
+   body::before and body::after — invisible, zero-size, no layout
+   impact, but each one forces a download.
+*/
+html::before { font-family: "Inter"; }
+html::after  { font-family: "Inter Tight"; }
+body::before { font-family: "Playfair Display"; }
+body::after  { font-family: "Geist Mono"; }
+html::before, html::after, body::before, body::after {
+  content: "Aa";
+  position: fixed;
+  width: 0; height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+}
+

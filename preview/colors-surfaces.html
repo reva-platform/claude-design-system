@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Surface system</title>
+<link rel="stylesheet" href="../colors_and_type.css?v=20260428">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  body{margin:0;padding:24px;background:var(--hay-50);font-family:var(--font-sans);color:var(--olive-900)}
+  .stack{display:flex;flex-direction:column;gap:18px}
+  .lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--olive-500);margin:0}
+
+  /* Layer 1 + 2 + 3 stacked demo */
+  .layer-row{display:grid;grid-template-columns:1fr 1.6fr;gap:14px;align-items:start}
+  .canvas-swatch{
+    height:160px;border-radius:var(--radius-xl);
+    background:var(--hay-50);
+    display:flex;flex-direction:column;justify-content:flex-end;padding:14px;
+    border:1px solid color-mix(in oklch, var(--hay-700) 8%, transparent);
+  }
+  .layer-meta{font-family:var(--font-mono);font-size:11px;color:var(--olive-500);margin-top:2px}
+  .layer-name{font-family:var(--font-heading);font-weight:600;font-size:14px;color:var(--olive-900)}
+
+  /* Card (hay-100, no shadow) */
+  .card{
+    background:var(--bg-card);
+    border-radius:var(--radius-2xl);
+    padding:16px;
+  }
+  .card-head{
+    display:flex;align-items:center;justify-content:space-between;
+    margin:0 4px 12px;
+  }
+  .card-head .title{font-family:var(--font-heading);font-weight:600;font-size:14px;color:var(--olive-900);margin:0}
+  .card-head .meta{font-family:var(--font-mono);font-size:11px;color:var(--olive-500)}
+
+  /* Nested rows */
+  .nested{display:flex;flex-direction:column;gap:6px}
+  .item{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 14px;border-radius:var(--radius-lg);
+    background:var(--surface-nested);
+  }
+  .item .row-l{display:flex;align-items:center;gap:10px}
+  .item .ico{
+    width:24px;height:24px;border-radius:6px;
+    background:color-mix(in oklch, var(--amber-600) 18%, transparent);
+    color:var(--amber-700);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-mono);font-size:11px;font-weight:600;
+  }
+  .item .lbl-row{font-size:13px;font-weight:500;color:var(--olive-900)}
+  .item .sub{font-family:var(--font-mono);font-size:11px;color:var(--olive-500);margin-left:auto}
+
+  /* Alpha ramp */
+  .ramp{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+    background:var(--bg-card);
+    border-radius:var(--radius-xl);
+    padding:14px;
+  }
+  .ramp .col{padding:0 10px}
+  .ramp .swatch{
+    height:60px;border-radius:var(--radius-md);margin-bottom:8px;
+  }
+  .ramp .name{font-family:var(--font-mono);font-size:11px;color:var(--olive-700)}
+  .ramp .alpha{font-family:var(--font-mono);font-size:11px;color:var(--olive-500);margin-top:2px}
+
+  /* Form-control row (white, no border) */
+  .form-row{
+    background:var(--bg-card);
+    border-radius:var(--radius-xl);
+    padding:14px;
+    display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  }
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field label{font-size:11px;font-weight:500;letter-spacing:.04em;color:var(--olive-500)}
+  .input,.select{
+    height:36px;padding:0 12px;
+    background:#fff;border:0;outline:0;
+    border-radius:var(--radius-md);
+    font-family:var(--font-sans);font-size:13px;color:var(--olive-900);
+    transition:box-shadow .15s ease;
+  }
+  .input::placeholder{color:var(--input-placeholder)}
+  .input:focus,.select:focus{box-shadow:0 0 0 2px var(--gold-500)}
+</style></head><body>
+<div class="stack">
+
+  <p class="lbl">Surface system — Hay ramp, no shadows</p>
+
+  <div class="layer-row">
+    <div class="canvas-swatch">
+      <div class="layer-name">Canvas</div>
+      <div class="layer-meta">--hay-50 — page</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <p class="title">Card — --hay-100 · flat, no shadow</p>
+        <span class="meta">layer 2</span>
+      </div>
+      <div class="nested">
+        <div class="item">
+          <div class="row-l"><span class="ico">A</span><span class="lbl-row">Reva Easy Access</span></div>
+          <span class="sub">£4,000 · 3.75%</span>
+        </div>
+        <div class="item">
+          <div class="row-l"><span class="ico">B</span><span class="lbl-row">BlackRock MMF</span></div>
+          <span class="sub">£5,500 · 4.50%</span>
+        </div>
+        <div class="item">
+          <div class="row-l"><span class="ico">C</span><span class="lbl-row">Reserved</span></div>
+          <span class="sub">£20,000 · 5.50%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="lbl" style="margin-top:6px">Nested-item surfaces — hay-500 at low alpha (sits inside a hay-100 card)</p>
+  <div class="ramp">
+    <div class="col">
+      <div class="swatch" style="background:var(--surface-nested-subtle)"></div>
+      <div class="name">--surface-nested-subtle</div>
+      <div class="alpha">hay-500 @ 4% · subtle</div>
+    </div>
+    <div class="col">
+      <div class="swatch" style="background:var(--surface-nested)"></div>
+      <div class="name">--surface-nested</div>
+      <div class="alpha">hay-500 @ 6% · default</div>
+    </div>
+    <div class="col">
+      <div class="swatch" style="background:var(--surface-nested-emphasized)"></div>
+      <div class="name">--surface-nested-emphasized</div>
+      <div class="alpha">hay-500 @ 8% · emphasized</div>
+    </div>
+  </div>
+
+  <p class="lbl" style="margin-top:6px">Form controls — pure white, no border (focus ring on tab)</p>
+  <div class="form-row">
+    <div class="field">
+      <label>Email</label>
+      <input class="input" placeholder="adviser@firm.co.uk">
+    </div>
+    <div class="field">
+      <label>Allocation</label>
+      <select class="select"><option>Reva Easy Access</option><option>BlackRock MMF</option></select>
+    </div>
+  </div>
+
+</div>
+</body></html>

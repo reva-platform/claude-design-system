@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Logo</title>
+<link rel="stylesheet" href="../colors_and_type.css?v=20260428">
+<style>
+  body{margin:0;padding:24px;background:var(--reva-porcelain);color:var(--olive-900);font-family:var(--font-sans);display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  .tile{border:1px solid var(--hay-200);border-radius:var(--radius-xl);padding:24px;display:flex;align-items:center;justify-content:center;min-height:120px;position:relative}
+  .tile.gold{background:var(--reva-gold);border-color:var(--reva-gold)}
+  .tile.amber{background:var(--reva-amber);border-color:var(--reva-amber)}
+  /* Default logo (95×40, ratio 2.375) renders at h=36px → w≈85.5px.
+     onColor logo (148×48, ratio 3.083) renders to match: h=36px → w≈111px.
+     Match the rendered glyph size (not the bounding box) by giving both the
+     same height; the onColor SVG has slightly more internal padding which
+     reads as identical visual weight at this scale. */
+  .tile img{height:36px;width:auto;display:block}
+  .tile .tag{position:absolute;top:10px;left:14px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--olive-500);font-family:var(--font-mono)}
+  .tile.gold .tag,.tile.amber .tag{color:rgba(255,255,255,.78)}
+  .meta{grid-column:1/-1;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--olive-500);margin-top:6px}
+</style></head><body>
+<div class="tile" style="background:#fff"><span class="tag">Default</span><img src="../assets/reva-logo.svg" alt="Reva"></div>
+<div class="tile gold"><span class="tag">onColor · gold</span><img src="../assets/reva-logo-oncolor.svg?v=7" alt="Reva on gold"></div>
+<div class="tile amber"><span class="tag">onColor · amber</span><img src="../assets/reva-logo-oncolor.svg?v=7" alt="Reva on amber"></div>
+<div class="meta">Default · wordmark currentColor + gold marks · onColor variant defaults to white</div>
+</body></html>

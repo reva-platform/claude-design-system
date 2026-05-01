@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Iconography</title>
+<link rel="stylesheet" href="../colors_and_type.css?v=20260428">
+<style>
+  body{margin:0;padding:22px 24px 96px;background:var(--reva-porcelain);color:var(--olive-900);font-family:var(--font-sans)}
+  .group{margin-bottom:22px}
+  .lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--olive-500);margin:0 0 12px}
+  .row{display:flex;flex-wrap:wrap;gap:18px 22px;align-items:flex-start}
+  .item{display:flex;flex-direction:column;align-items:center;min-width:72px;gap:8px}
+  .ico{color:var(--olive-900);display:flex;align-items:center;justify-content:center;transition:width .15s ease, height .15s ease}
+  .ico img{width:100%;height:100%;display:block}
+  .name{font-family:var(--font-sans-tight, var(--font-sans));font-size:11px;letter-spacing:-0.005em;color:var(--olive-500);text-align:center;line-height:1.2}
+  .note{font-size:12px;color:var(--olive-600);margin:0 0 18px;max-width:600px;line-height:1.5}
+  .note a{color:var(--olive-800);text-decoration:underline;text-decoration-color:var(--olive-300);text-underline-offset:2px}
+  .size-tag{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-sans-tight, var(--font-sans));font-variant-numeric:tabular-nums;font-size:11px;color:var(--olive-500);margin-left:8px}
+  .size-tag::before{content:"";width:6px;height:6px;border-radius:1px;background:var(--gold-500)}
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head><body>
+<div id="root"></div>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "iconSize": 20
+}/*EDITMODE-END*/;
+
+const MARKETING = [
+  { name: "arrow-right",        file: "arrow-right-bold.svg" },
+  { name: "brackets-curly",     file: "brackets-curly.svg" },
+  { name: "certificate",        file: "certificate.svg" },
+  { name: "cpu",                file: "cpu.svg" },
+];
+
+const PORTAL = [
+  { name: "squares-four",       file: "squares-four.svg" },
+  { name: "users-three",        file: "users-three.svg" },
+  { name: "git-branch",         file: "git-branch.svg" },
+  { name: "bank",               file: "bank.svg" },
+  { name: "shield-check",       file: "shield-check.svg" },
+  { name: "sliders-horizontal", file: "sliders-horizontal.svg" },
+  { name: "gauge",              file: "gauge.svg" },
+];
+
+function IconRow({ items, size }) {
+  const style = { width: size, height: size };
+  return (
+    <div className="row">
+      {items.map(i => (
+        <div className="item" key={i.name}>
+          <div className="ico" style={style}>
+            <img src={`../assets/icons/${i.file}`} alt="" />
+          </div>
+          <div className="name">{i.name}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function App() {
+  const [tweaks, setTweak] = window.useTweaks(TWEAK_DEFAULTS);
+  const size = tweaks.iconSize;
+
+  return (
+    <>
+      <p className="note">
+        Phosphor Icons (regular weight) is the single icon family across marketing and product.
+        No Lucide, no emoji, no Unicode pictographs. Eleven convenience copies live in
+        {" "}<code>assets/icons/</code> — grab any other icon from{" "}
+        <a href="https://phosphoricons.com" target="_blank" rel="noreferrer">phosphoricons.com</a>{" "}
+        or unpkg.
+      </p>
+
+      <div className="group">
+        <p className="lbl">
+          Marketing site
+          <span className="size-tag">{size}×{size}px</span>
+        </p>
+        <IconRow items={MARKETING} size={size} />
+      </div>
+
+      <div className="group">
+        <p className="lbl">
+          Advisor portal
+          <span className="size-tag">{size}×{size}px</span>
+        </p>
+        <IconRow items={PORTAL} size={size} />
+      </div>
+
+      <window.TweaksPanel title="Tweaks">
+        <window.TweakSection title="Preview size">
+          <window.TweakRadio
+            label="Icon size"
+            value={size}
+            onChange={v => setTweak('iconSize', v)}
+            options={[
+              { value: 16, label: '16' },
+              { value: 20, label: '20' },
+              { value: 24, label: '24' },
+              { value: 32, label: '32' },
+            ]}
+          />
+          <window.TweakSlider
+            label="Custom"
+            value={size}
+            onChange={v => setTweak('iconSize', v)}
+            min={12}
+            max={64}
+            step={1}
+            unit="px"
+          />
+        </window.TweakSection>
+      </window.TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body></html>

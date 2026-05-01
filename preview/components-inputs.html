@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Inputs &amp; form</title>
+<link rel="stylesheet" href="../colors_and_type.css?v=20260428">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  body{margin:0;padding:24px;background:var(--reva-porcelain);color:var(--fg);font-family:var(--font-sans)}
+
+  .note{font-size:12px;color:var(--olive-600);margin:0 0 18px;max-width:560px;line-height:1.55}
+  .lbl-section{display:flex;align-items:baseline;gap:8px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--olive-500);margin:0 0 12px}
+  .lbl-section .desc{letter-spacing:0;text-transform:none;font-size:12px;color:var(--olive-600);font-weight:400}
+
+  .group{margin-bottom:32px}
+  .stack{display:flex;flex-direction:column;gap:14px;max-width:380px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:18px 24px;max-width:560px}
+
+  label{display:block;font-size:12px;font-weight:500;letter-spacing:.02em;margin-bottom:6px;color:var(--olive-700)}
+
+  /* Flat input — no border at rest, subtle olive-200 stroke on hover, gold ring on focus */
+  .input{
+    width:100%;
+    height:36px;
+    padding:0 12px;
+    font-family:var(--font-sans);
+    font-size:13px;
+    color:var(--olive-900);
+    background:#fff;
+    border:1px solid transparent;
+    border-radius:var(--radius-md);
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .input::placeholder{color:var(--olive-500)}
+  .input:hover{border-color:var(--olive-200)}
+  .input:focus{outline:none;border-color:transparent;box-shadow:0 0 0 2px var(--gold-500)}
+
+  /* Textarea — same treatment */
+  .input.area{height:auto;min-height:88px;padding:10px 12px;line-height:1.5;resize:vertical}
+
+  /* Select — same treatment, with caret */
+  .select-wrap{position:relative}
+  .select-wrap::after{
+    content:"";position:absolute;right:12px;top:50%;width:8px;height:8px;
+    border-right:1.5px solid var(--olive-600);border-bottom:1.5px solid var(--olive-600);
+    transform:translateY(-70%) rotate(45deg);pointer-events:none;
+  }
+  select.input{appearance:none;-webkit-appearance:none;padding-right:32px;cursor:pointer}
+
+  /* Disabled */
+  .input:disabled{background:var(--hay-50);color:var(--olive-500);cursor:not-allowed}
+  .input:disabled:hover{border-color:transparent}
+
+  /* Error */
+  .input.error{box-shadow:inset 0 0 0 1px var(--mulberry-500)}
+  .input.error:focus{box-shadow:inset 0 0 0 1px var(--mulberry-500), 0 0 0 2px var(--gold-500)}
+  .help{font-size:11px;color:var(--olive-500);margin-top:4px;letter-spacing:.005em}
+  .help.error{color:var(--mulberry-600)}
+
+  /* Inline composite input — adornment + field, all flat */
+  .input-group{
+    display:flex;align-items:center;
+    background:#fff;border:1px solid transparent;border-radius:var(--radius-md);
+    transition:border-color .15s ease, box-shadow .15s ease;
+    height:36px;
+  }
+  .input-group:hover{border-color:var(--olive-200)}
+  .input-group:focus-within{border-color:transparent;box-shadow:0 0 0 2px var(--gold-500)}
+  .input-group .prefix{padding:0 4px 0 12px;color:var(--olive-500);font-size:13px;display:flex;align-items:center;gap:6px}
+  .input-group .suffix{padding:0 12px 0 8px;color:var(--olive-500);font-size:12px;letter-spacing:.04em}
+  .input-group input{flex:1;border:0;background:transparent;height:100%;padding:0 4px;font-size:13px;color:var(--olive-900);font-family:var(--font-sans)}
+  .input-group input:focus{outline:none}
+  .input-group input::placeholder{color:var(--olive-500)}
+
+  /* Checkbox + radio — flat, no fill at rest */
+  .check-row{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--olive-800);max-width:380px;line-height:1.5}
+  .check, .radio{
+    appearance:none;-webkit-appearance:none;
+    width:16px;height:16px;flex:0 0 16px;margin-top:2px;
+    background:#fff;border:1.5px solid var(--olive-300);
+    cursor:pointer;transition:all .12s ease;
+  }
+  .check{border-radius:4px}
+  .radio{border-radius:50%}
+  .check:hover, .radio:hover{border-color:var(--olive-500)}
+  .check:focus-visible, .radio:focus-visible{outline:none;box-shadow:0 0 0 2px var(--gold-500)}
+  .check:checked{background:var(--reva-amber);border-color:var(--reva-amber)}
+  .check:checked::after{
+    content:"";display:block;width:4px;height:8px;margin:1px auto 0;
+    border-right:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(45deg);
+  }
+  .radio{display:flex;align-items:center;justify-content:center}
+  .radio:checked{border-color:var(--reva-amber)}
+  .radio:checked::after{
+    content:"";width:8px;height:8px;border-radius:50%;
+    background:var(--reva-amber);
+  }
+
+  /* Toggle */
+  .toggle{position:relative;display:inline-block;width:32px;height:18px;flex:0 0 32px;margin-top:1px}
+  .toggle input{opacity:0;width:0;height:0}
+  .toggle .track{position:absolute;inset:0;background:var(--olive-300);border-radius:9999px;transition:background .15s ease;cursor:pointer}
+  .toggle .track::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;background:#fff;border-radius:50%;transition:transform .15s ease}
+  .toggle input:checked + .track{background:var(--fern-600)}
+  .toggle input:checked + .track::after{transform:translateX(14px)}
+  .toggle input:focus-visible + .track{box-shadow:0 0 0 2px var(--gold-500)}
+</style></head><body>
+
+<p class="note">
+  Reva form inputs are <strong>flat</strong>. White surface, no border at rest. A subtle
+  <span style="color:var(--olive-700)">olive-200</span> stroke appears on hover, and a 2px gold
+  focus ring on focus. The input fades into the page until the user touches it.
+</p>
+
+<!-- Text inputs -->
+<div class="group">
+  <p class="lbl-section">Text input <span class="desc">— rest · hover · focus · disabled · error</span></p>
+  <div class="row">
+    <div>
+      <label>Email</label>
+      <input class="input" placeholder="adviser@firm.co.uk">
+    </div>
+    <div>
+      <label>Firm name</label>
+      <input class="input" value="Marlow & Hart Wealth">
+    </div>
+    <div>
+      <label>Postcode</label>
+      <input class="input" placeholder="SW1A 1AA" disabled value="—">
+      <p class="help">Inherited from the household record.</p>
+    </div>
+    <div>
+      <label>NI number</label>
+      <input class="input error" value="QQ 12 34 56 X">
+      <p class="help error">Format doesn't match — expected 9 characters.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Composite / adorned -->
+<div class="group">
+  <p class="lbl-section">Adorned input <span class="desc">— prefix / suffix slots, same flat container</span></p>
+  <div class="row">
+    <div>
+      <label>Annual salary</label>
+      <div class="input-group">
+        <span class="prefix">£</span>
+        <input placeholder="0">
+        <span class="suffix">/ yr</span>
+      </div>
+    </div>
+    <div>
+      <label>Search households</label>
+      <div class="input-group">
+        <span class="prefix">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+        </span>
+        <input placeholder="Smith, ISA, last week…">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Select + textarea -->
+<div class="group">
+  <p class="lbl-section">Select &amp; textarea <span class="desc">— same chrome, no border at rest</span></p>
+  <div class="row">
+    <div>
+      <label>Tax wrapper</label>
+      <div class="select-wrap">
+        <select class="input">
+          <option>SIPP</option>
+          <option>ISA</option>
+          <option>GIA</option>
+          <option>Junior ISA</option>
+        </select>
+      </div>
+    </div>
+    <div>
+      <label>Adviser note</label>
+      <textarea class="input area" placeholder="Add context for this review…"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- Checkbox / radio / toggle -->
+<div class="group">
+  <p class="lbl-section">Choices <span class="desc">— checkbox · radio · toggle</span></p>
+  <div class="stack" style="gap:10px">
+    <label class="check-row"><input type="checkbox" class="check" checked> I confirm the household has reviewed and signed the suitability report.</label>
+    <label class="check-row"><input type="checkbox" class="check"> Send a copy to the secondary contact on file.</label>
+    <label class="check-row"><input type="radio" name="freq" class="radio" checked> Quarterly review</label>
+    <label class="check-row"><input type="radio" name="freq" class="radio"> Half-yearly review</label>
+    <label class="check-row">
+      <span class="toggle"><input type="checkbox" checked><span class="track"></span></span>
+      Auto-prepare review packs 7 days before the window opens.
+    </label>
+  </div>
+</div>
+
+</body></html>

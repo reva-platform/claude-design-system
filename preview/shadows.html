@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Shadow / elevation</title>
+<link rel="stylesheet" href="../colors_and_type.css?v=20260428">
+<style>
+  body{margin:0;padding:30px 22px;background:var(--reva-porcelain);color:var(--olive-900);font-family:var(--font-sans)}
+  .row{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+  .card{aspect-ratio:1.4;background:#fff;border-radius:var(--radius-xl);display:flex;align-items:flex-end;padding:14px}
+  .card.section{background:var(--reva-soft-linen);border-radius:var(--radius-3xl)}
+  .lbl{font-family:var(--font-mono);font-size:11px;color:var(--olive-500)}
+</style></head><body>
+<div class="row">
+  <div class="card" style="box-shadow:var(--shadow-xs)"><div class="lbl">xs</div></div>
+  <div class="card" style="box-shadow:var(--shadow-sm)"><div class="lbl">sm</div></div>
+  <div class="card" style="box-shadow:var(--shadow-md)"><div class="lbl">md</div></div>
+  <div class="card section" style="box-shadow:var(--shadow-card)"><div class="lbl">card · section</div></div>
+</div>
+</body></html>

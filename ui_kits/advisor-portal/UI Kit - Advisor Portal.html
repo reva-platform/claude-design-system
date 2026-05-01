@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Reva — UI kit (Advisor Portal)</title>
+<link rel="stylesheet" href="../../colors_and_type.css?v=20260428">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--hay-50);
+    color:var(--olive-900);
+    font-family:var(--font-sans);
+    font-size:14px;
+    line-height:1.45;
+    letter-spacing:0.01em;
+  }
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit;cursor:pointer}
+
+  /* ============================================================== */
+  /*  App shell                                                      */
+  /* ============================================================== */
+  .app{
+    display:grid;
+    grid-template-columns:248px 1fr;
+    min-height:100vh;
+  }
+
+  /* ---------------- Sidebar ---------------- */
+  .sidebar{
+    background:var(--hay-100);
+    border-right:1px solid var(--hay-200);
+    padding:18px 12px;
+    display:flex;flex-direction:column;
+    position:sticky;top:0;height:100vh;
+  }
+  .sidebar-header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:6px 8px 18px 12px;
+  }
+  .sidebar-header .logo{height:24px;color:var(--olive-900);display:inline-flex}
+  .sidebar-header .logo img{height:100%}
+  .sidebar-trigger{
+    width:28px;height:28px;border-radius:6px;border:0;
+    background:transparent;color:var(--olive-500);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .sidebar-trigger:hover{background:var(--hay-200);color:var(--olive-900)}
+  .sidebar-trigger svg{width:16px;height:16px}
+
+  .nav-group{display:flex;flex-direction:column;gap:1px;margin-bottom:8px}
+  .nav-group-label{
+    font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;
+    color:var(--olive-500);
+    padding:14px 12px 8px;
+  }
+  .nav-item{
+    display:flex;align-items:center;gap:10px;
+    padding:8px 10px;
+    border-radius:var(--radius-md);
+    color:var(--olive-700);
+    font-size:14px;font-weight:500;letter-spacing:0.01em;
+    transition:background-color .12s ease, color .12s ease;
+  }
+  .nav-item:hover{background:var(--hay-200);color:var(--olive-900)}
+  .nav-item[aria-current="page"]{
+    background:var(--reva-soft-linen);
+    color:var(--olive-900);
+  }
+  .nav-item svg{width:16px;height:16px;flex-shrink:0;color:currentColor;stroke-width:1.75}
+
+  .sidebar-footer{margin-top:auto;border-top:1px solid var(--hay-200);padding-top:12px}
+  .sidebar-user{
+    display:flex;align-items:center;gap:10px;padding:8px 10px;
+    border-radius:var(--radius-md);color:var(--olive-900);
+  }
+  .sidebar-user:hover{background:var(--hay-200)}
+  .avatar{
+    width:32px;height:32px;border-radius:9999px;
+    background:var(--amber-700);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:600;letter-spacing:0.02em;
+    flex-shrink:0;
+  }
+  .sidebar-user .meta{flex:1;min-width:0;line-height:1.2}
+  .sidebar-user .meta .name{font-size:13px;font-weight:500;color:var(--olive-900);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sidebar-user .meta .sub{font-size:11px;color:var(--olive-500);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sidebar-user .chev{color:var(--olive-400)}
+
+  /* ---------------- Main column ---------------- */
+  .main{display:flex;flex-direction:column}
+  .topbar{
+    height:56px;background:var(--hay-50);
+    border-bottom:1px solid var(--hay-200);
+    display:flex;align-items:center;gap:14px;
+    padding:0 28px;
+  }
+  .crumb{font-size:13px;color:var(--olive-500)}
+  .crumb b{color:var(--olive-900);font-weight:500}
+  .topbar-spacer{flex:1}
+  .topbar-action{
+    height:32px;padding:0 12px;border-radius:var(--radius-md);
+    background:transparent;border:1px solid var(--hay-200);
+    color:var(--olive-700);font-size:13px;font-weight:500;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .topbar-action:hover{background:var(--hay-100);color:var(--olive-900)}
+  .topbar-action.primary{background:var(--amber-600);color:#fff;border-color:var(--amber-600)}
+  .topbar-action.primary:hover{background:var(--amber-700);border-color:var(--amber-700)}
+
+  /* ---------------- Page surface ---------------- */
+  .page{padding:32px 40px 64px;max-width:1280px;width:100%}
+  .page-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px}
+  .page-title{
+    font-family:var(--font-heading);font-weight:500;
+    font-size:32px;line-height:1.1;letter-spacing:-0.015em;
+    color:var(--reva-coffee-bean);margin:0 0 6px;
+  }
+  .page-subtitle{font-size:14px;color:var(--olive-500);margin:0}
+
+  /* ---------------- Stat row ---------------- */
+  .stats{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+    margin-bottom:28px;
+  }
+  .stat{
+    background:#fff;border:1px solid var(--hay-200);
+    border-radius:var(--radius-xl);padding:18px 20px;
+    display:flex;flex-direction:column;gap:6px;
+  }
+  .stat .label{font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--olive-500)}
+  .stat .value{
+    font-family:var(--font-heading);font-weight:500;
+    font-size:28px;letter-spacing:-0.015em;color:var(--reva-coffee-bean);
+    line-height:1.05;
+  }
+  .stat .delta{font-size:12px;color:var(--olive-500);font-family:var(--font-mono);letter-spacing:0}
+  .stat .delta.up{color:var(--fern-700)}
+  .stat .delta.down{color:var(--mulberry-600)}
+
+  /* ---------------- Two-col content ---------------- */
+  .content{display:grid;grid-template-columns:1.6fr 1fr;gap:20px}
+
+  .panel{
+    background:#fff;border:1px solid var(--hay-200);
+    border-radius:var(--radius-xl);overflow:hidden;
+  }
+  .panel-header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 22px;border-bottom:1px solid var(--hay-200);
+  }
+  .panel-header h3{
+    font-family:var(--font-heading);font-weight:600;font-size:15px;letter-spacing:-0.005em;
+    margin:0;color:var(--olive-900);
+  }
+  .panel-header .meta{font-size:12px;color:var(--olive-500)}
+
+  /* ---------------- Households table ---------------- */
+  .table{width:100%;border-collapse:collapse;font-size:13px}
+  .table th, .table td{
+    padding:12px 22px;text-align:left;
+    border-bottom:1px solid var(--hay-200);
+  }
+  .table th{
+    font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--olive-500);background:var(--hay-50);
+  }
+  .table td{color:var(--olive-900)}
+  .table tr:last-child td{border-bottom:0}
+  .table .name{font-weight:500;color:var(--reva-coffee-bean)}
+  .table .num{font-family:var(--font-mono);letter-spacing:0;color:var(--olive-900)}
+  .table .muted{color:var(--olive-500)}
+
+  .badge{
+    display:inline-flex;align-items:center;gap:4px;
+    height:22px;padding:0 8px;
+    font-size:11px;font-weight:500;letter-spacing:0.02em;
+    border-radius:9999px;
+  }
+  .badge.dot::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+  .b-active{background:color-mix(in oklch,var(--fern-500) 12%,transparent);color:var(--fern-700)}
+  .b-pending{background:color-mix(in oklch,var(--gold-500) 18%,transparent);color:var(--amber-800)}
+  .b-attention{background:color-mix(in oklch,var(--mulberry-500) 12%,transparent);color:var(--mulberry-700)}
+
+  /* ---------------- Activity feed ---------------- */
+  .activity{padding:6px 0}
+  .activity-item{
+    display:grid;grid-template-columns:24px 1fr auto;gap:12px;
+    padding:14px 22px;border-bottom:1px solid var(--hay-200);
+  }
+  .activity-item:last-child{border-bottom:0}
+  .activity-item .ico{
+    width:24px;height:24px;border-radius:50%;
+    background:var(--hay-100);color:var(--olive-700);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .activity-item .ico svg{width:13px;height:13px;stroke-width:1.75}
+  .activity-item .ico.amber{background:color-mix(in oklch,var(--amber-500) 14%,transparent);color:var(--amber-700)}
+  .activity-item .ico.teal{background:color-mix(in oklch,var(--reva-deep-teal) 14%,transparent);color:var(--reva-deep-teal)}
+  .activity-item .ico.green{background:color-mix(in oklch,var(--fern-500) 14%,transparent);color:var(--fern-700)}
+  .activity-item .body{min-width:0}
+  .activity-item .body .title{font-size:13px;color:var(--olive-900);font-weight:500}
+  .activity-item .body .sub{font-size:12px;color:var(--olive-500);margin-top:2px}
+  .activity-item .ts{font-size:11px;font-family:var(--font-mono);color:var(--olive-500);align-self:center;letter-spacing:0}
+
+  /* ---------------- Treasury card ---------------- */
+  .treasury{margin-top:20px}
+  .treasury-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+  }
+  .treasury-cell{
+    padding:22px;border-right:1px solid var(--hay-200);
+  }
+  .treasury-cell:last-child{border-right:0}
+  .treasury-cell .label{font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--olive-500);margin-bottom:8px}
+  .treasury-cell .value{font-family:var(--font-heading);font-size:22px;font-weight:500;letter-spacing:-0.01em;color:var(--reva-coffee-bean);line-height:1.1}
+  .treasury-cell .sub{font-size:12px;color:var(--olive-500);margin-top:4px;font-family:var(--font-mono);letter-spacing:0}
+
+  .kit-label{
+    padding:10px 40px 0;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--olive-500);
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ============== SIDEBAR ============== -->
+  <aside class="sidebar" data-screen-label="Sidebar">
+    <div class="sidebar-header">
+      <a href="#" class="logo"><img src="../../assets/reva-logo.svg" alt="Reva"></a>
+      <button class="sidebar-trigger" aria-label="Collapse">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></svg>
+      </button>
+    </div>
+
+    <div class="nav-group">
+      <a class="nav-item" aria-current="page" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Households
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="6" y1="3" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+        Orchestration
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+        Payments
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>
+        Treasury
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2"/><path d="M12 12 22 2"/><path d="M22 8V2h-6"/></svg>
+        Portfolio
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-group-label">Tools</span>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Automations
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+        Compliance
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="4" y1="21" y2="14"/><line x1="4" x2="4" y1="10" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="8" y2="3"/><line x1="20" x2="20" y1="21" y2="16"/><line x1="20" x2="20" y1="12" y2="3"/><line x1="2" x2="6" y1="14" y2="14"/><line x1="10" x2="14" y1="8" y2="8"/><line x1="18" x2="22" y1="16" y2="16"/></svg>
+        Firm settings
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <a class="sidebar-user" href="#">
+        <span class="avatar">EC</span>
+        <span class="meta">
+          <span class="name">Eleanor Chen</span>
+          <span class="sub">Meridian Wealth</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ============== MAIN ============== -->
+  <main class="main">
+    <div class="topbar">
+      <div class="crumb">Dashboard <span style="color:var(--olive-300);margin:0 6px">/</span> <b>Overview</b></div>
+      <div class="topbar-spacer"></div>
+      <button class="topbar-action">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        Search
+      </button>
+      <button class="topbar-action primary">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
+        New household
+      </button>
+    </div>
+
+    <div class="kit-label">01 — Page header & stats</div>
+    <section class="page" data-screen-label="Dashboard">
+      <header class="page-header">
+        <div>
+          <h1 class="page-title">Good morning, Eleanor.</h1>
+          <p class="page-subtitle">Here's what's moving across your firm today.</p>
+        </div>
+      </header>
+
+      <div class="stats">
+        <div class="stat">
+          <span class="label">Households</span>
+          <span class="value">147</span>
+          <span class="delta up">+3 this week</span>
+        </div>
+        <div class="stat">
+          <span class="label">Assets under advice</span>
+          <span class="value">£412.8M</span>
+          <span class="delta up">+1.4% MoM</span>
+        </div>
+        <div class="stat">
+          <span class="label">Pending actions</span>
+          <span class="value">8</span>
+          <span class="delta">3 require review</span>
+        </div>
+        <div class="stat">
+          <span class="label">Cash buffer health</span>
+          <span class="value">94%</span>
+          <span class="delta up">healthy</span>
+        </div>
+      </div>
+
+      <div class="kit-label" style="padding-left:0;padding-top:0;margin-bottom:10px">02 — Households table & activity</div>
+      <div class="content">
+        <div class="panel">
+          <div class="panel-header">
+            <h3>Households needing attention</h3>
+            <span class="meta">5 of 147</span>
+          </div>
+          <table class="table">
+            <thead>
+              <tr><th>Household</th><th>Adviser</th><th>AUA</th><th>Status</th><th>Last review</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="name">Ashworth & Mehta</td>
+                <td class="muted">E. Chen</td>
+                <td class="num">£8.42M</td>
+                <td><span class="badge b-attention dot">Carry-forward window</span></td>
+                <td class="muted">12 days ago</td>
+              </tr>
+              <tr>
+                <td class="name">Tomlinson Family</td>
+                <td class="muted">J. Patel</td>
+                <td class="num">£3.10M</td>
+                <td><span class="badge b-pending dot">FX reposition</span></td>
+                <td class="muted">3 days ago</td>
+              </tr>
+              <tr>
+                <td class="name">Okafor-Wright</td>
+                <td class="muted">E. Chen</td>
+                <td class="num">£12.86M</td>
+                <td><span class="badge b-active dot">Funded</span></td>
+                <td class="muted">Yesterday</td>
+              </tr>
+              <tr>
+                <td class="name">Saunders Trust</td>
+                <td class="muted">M. Devereux</td>
+                <td class="num">£6.74M</td>
+                <td><span class="badge b-pending dot">Suitability due</span></td>
+                <td class="muted">28 days ago</td>
+              </tr>
+              <tr>
+                <td class="name">Halverson</td>
+                <td class="muted">J. Patel</td>
+                <td class="num">£2.05M</td>
+                <td><span class="badge b-attention dot">Buffer below target</span></td>
+                <td class="muted">5 days ago</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h3>Activity</h3>
+            <span class="meta">today</span>
+          </div>
+          <div class="activity">
+            <div class="activity-item">
+              <span class="ico amber">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/></svg>
+              </span>
+              <div class="body">
+                <div class="title">£24,000 moved · Ashworth & Mehta</div>
+                <div class="sub">ISA top-up resolved · pension carry-forward window</div>
+              </div>
+              <span class="ts">09:14</span>
+            </div>
+            <div class="activity-item">
+              <span class="ico teal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 17 4-4 4 4 5-5"/></svg>
+              </span>
+              <div class="body">
+                <div class="title">FX reposition prepared · Tomlinson</div>
+                <div class="sub">USD → GBP, awaiting your approval</div>
+              </div>
+              <span class="ts">08:42</span>
+            </div>
+            <div class="activity-item">
+              <span class="ico green">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <div class="body">
+                <div class="title">Suitability review signed · Okafor-Wright</div>
+                <div class="sub">Audit trail filed · Consumer Duty</div>
+              </div>
+              <span class="ts">Yesterday</span>
+            </div>
+            <div class="activity-item">
+              <span class="ico">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </span>
+              <div class="body">
+                <div class="title">Cash buffer alert · Halverson</div>
+                <div class="sub">Below 60-day target — proposing top-up</div>
+              </div>
+              <span class="ts">04:30</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kit-label" style="padding-left:0;padding-top:24px;margin-bottom:10px">03 — Treasury panel</div>
+      <div class="panel treasury">
+        <div class="panel-header">
+          <h3>Firm treasury</h3>
+          <span class="meta">across 147 households</span>
+        </div>
+        <div class="treasury-grid">
+          <div class="treasury-cell">
+            <div class="label">Cash on platform</div>
+            <div class="value">£18.42M</div>
+            <div class="sub">4.91% blended yield</div>
+          </div>
+          <div class="treasury-cell">
+            <div class="label">FX exposure</div>
+            <div class="value">£3.08M</div>
+            <div class="sub">USD 62% · EUR 38%</div>
+          </div>
+          <div class="treasury-cell">
+            <div class="label">Pending allocations</div>
+            <div class="value">£1.24M</div>
+            <div class="sub">8 transfers in flight</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+</body>
+</html>

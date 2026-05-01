@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Selection cards</title>
+<link rel="stylesheet" href="../colors_and_type.css?v=20260428">
+<style>
+  body{margin:0;padding:24px;background:var(--reva-porcelain);color:var(--fg);font-family:var(--font-sans)}
+  .note{font-size:12px;color:var(--olive-600);margin:0 0 22px;max-width:640px;line-height:1.55}
+
+  .lbl-section{display:flex;align-items:baseline;gap:8px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--olive-500);margin:0 0 12px}
+  .lbl-section .desc{letter-spacing:0;text-transform:none;font-size:12px;color:var(--olive-600);font-weight:400}
+
+  .group{margin-bottom:32px}
+  .grid{display:grid;grid-template-columns:repeat(3,minmax(0,200px));gap:12px;max-width:640px}
+
+  /* Base card */
+  .sel{
+    position:relative;
+    display:flex;flex-direction:column;gap:6px;
+    background:#fff;
+    border:1px solid transparent;
+    border-radius:var(--radius-lg);
+    padding:12px 14px;
+    cursor:pointer;
+    transition:border-color .15s ease, box-shadow .15s ease;
+    text-align:left;
+    font-family:inherit;
+    color:inherit;
+  }
+  .sel:hover{border-color:var(--olive-200)}
+  .sel.selected{border-color:var(--reva-amber);box-shadow:inset 0 0 0 1px var(--reva-amber)}
+  .sel:focus-visible{outline:none;box-shadow:0 0 0 2px var(--gold-500)}
+  .sel.selected:focus-visible{box-shadow:inset 0 0 0 1px var(--reva-amber), 0 0 0 2px var(--gold-500)}
+
+  .sel .title{font-size:13px;font-weight:600;color:var(--olive-900);letter-spacing:-.005em}
+  .sel .desc-line{font-size:12px;color:var(--olive-500);line-height:1.45}
+  .sel .icon{width:20px;height:20px;color:var(--olive-700);margin-bottom:2px}
+  .sel.selected .icon{color:var(--reva-amber)}
+
+  /* Indicator (top-right) */
+  .ind{
+    position:absolute;top:10px;right:10px;
+    width:18px;height:18px;flex:0 0 18px;
+    display:flex;align-items:center;justify-content:center;
+    background:#fff;border:1.5px solid var(--olive-300);
+    transition:all .12s ease;
+  }
+  .ind.check{border-radius:4px}
+  .ind.radio{border-radius:50%}
+  .sel:hover .ind{border-color:var(--olive-500)}
+  .sel.selected .ind{background:var(--reva-amber);border-color:var(--reva-amber)}
+  .ind.check svg, .ind.radio .dot{opacity:0;transition:opacity .12s ease}
+  .sel.selected .ind.check svg{opacity:1}
+  .sel.selected .ind.radio .dot{opacity:1}
+  .ind.check svg{width:10px;height:10px;color:#fff}
+  .ind.radio .dot{width:6px;height:6px;border-radius:50%;background:#fff}
+
+  /* Toggle indicator */
+  .ind-toggle{
+    position:absolute;top:12px;right:12px;
+    width:32px;height:18px;border-radius:9999px;
+    background:var(--olive-300);transition:background .15s ease;
+    flex:0 0 32px;
+  }
+  .ind-toggle::after{
+    content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;
+    background:#fff;border-radius:50%;transition:transform .15s ease;
+  }
+  .sel.selected .ind-toggle{background:var(--reva-amber)}
+  .sel.selected .ind-toggle::after{transform:translateX(14px)}
+
+  /* Compact pill variant — single line */
+  .sel.pill{flex-direction:row;align-items:center;justify-content:space-between;padding:10px 14px}
+  .sel.pill .title{font-size:13px;font-weight:600}
+  .sel.pill .ind{position:static;top:auto;right:auto}
+  .sel.pill .ind-toggle{position:relative;top:auto;right:auto}
+
+  /* When card has icon row, push indicator below it */
+  .sel.with-icon{padding-top:14px}
+</style></head><body>
+
+<p class="note">
+  Selection cards — richer alternatives to bare checkboxes, radios, and toggles. Same flat surface
+  language as inputs (white fill, no border at rest, hover stroke), with the brand amber doing
+  double duty as the selection accent. Use when each option needs a description, an icon, or
+  visual weight a 16px control can't carry.
+</p>
+
+<!-- Checkbox cards -->
+<div class="group">
+  <p class="lbl-section">Checkbox cards <span class="desc">— multi-select · one or more options</span></p>
+
+  <p class="lbl-section" style="font-size:10px;color:var(--olive-400);margin-top:4px">Title only</p>
+  <div class="grid">
+    <button class="sel selected" type="button"><span class="title">Next.js</span><span class="ind check"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 8l3.5 3.5L13 5"/></svg></span></button>
+    <button class="sel" type="button"><span class="title">Vite</span><span class="ind check"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 8l3.5 3.5L13 5"/></svg></span></button>
+    <button class="sel" type="button"><span class="title">Astro</span><span class="ind check"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 8l3.5 3.5L13 5"/></svg></span></button>
+  </div>
+
+  <p class="lbl-section" style="font-size:10px;color:var(--olive-400);margin-top:14px">Title + description</p>
+  <div class="grid">
+    <button class="sel selected" type="button">
+      <span class="title">Next.js</span>
+      <span class="desc-line">Best for apps</span>
+      <span class="ind check"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 8l3.5 3.5L13 5"/></svg></span>
+    </button>
+    <button class="sel" type="button">
+      <span class="title">Vite</span>
+      <span class="desc-line">Best for SPAs</span>
+      <span class="ind check"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 8l3.5 3.5L13 5"/></svg></span>
+    </button>
+    <button class="sel" type="button">
+      <span class="title">Astro</span>
+      <span class="desc-line">Best for static sites</span>
+      <span class="ind check"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 8l3.5 3.5L13 5"/></svg></span>
+    </button>
+  </div>
+
+  <p class="lbl-section" style="font-size:10px;color:var(--olive-400);margin-top:14px">Icon + title + description</p>
+  <div class="grid">
+    <button class="sel selected with-icon" type="button">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l9 4-9 4-9-4 9-4z"/><path d="M3 12l9 4 9-4"/><path d="M3 17l9 4 9-4"/></svg>
+      <span class="title">Next.js</span>
+      <span class="desc-line">Best for apps</span>
+      <span class="ind check"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 8l3.5 3.5L13 5"/></svg></span>
+    </button>
+    <button class="sel with-icon" type="button">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l9 4-9 4-9-4 9-4z"/><path d="M3 12l9 4 9-4"/><path d="M3 17l9 4 9-4"/></svg>
+      <span class="title">Vite</span>
+      <span class="desc-line">Best for SPAs</span>
+      <span class="ind check"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 8l3.5 3.5L13 5"/></svg></span>
+    </button>
+    <button class="sel with-icon" type="button">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l9 4-9 4-9-4 9-4z"/><path d="M3 12l9 4 9-4"/><path d="M3 17l9 4 9-4"/></svg>
+      <span class="title">Astro</span>
+      <span class="desc-line">Best for static sites</span>
+      <span class="ind check"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 8l3.5 3.5L13 5"/></svg></span>
+    </button>
+  </div>
+</div>
+
+<!-- Radio cards -->
+<div class="group">
+  <p class="lbl-section">Radio cards <span class="desc">— single select · exactly one option</span></p>
+
+  <p class="lbl-section" style="font-size:10px;color:var(--olive-400);margin-top:4px">Icon + title + description</p>
+  <div class="grid">
+    <button class="sel with-icon" type="button">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9.5-4.5-1-8-4.5-8-9.5V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+      <span class="title">Allow</span>
+      <span class="desc-line">This user can always access the system.</span>
+      <span class="ind radio"><span class="dot"></span></span>
+    </button>
+    <button class="sel selected with-icon" type="button">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M5.5 5.5l13 13"/></svg>
+      <span class="title">Deny</span>
+      <span class="desc-line">This user will be denied access to the system.</span>
+      <span class="ind radio"><span class="dot"></span></span>
+    </button>
+    <button class="sel with-icon" type="button">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      <span class="title">Lock</span>
+      <span class="desc-line">This user will be locked out of the system.</span>
+      <span class="ind radio"><span class="dot"></span></span>
+    </button>
+  </div>
+
+  <p class="lbl-section" style="font-size:10px;color:var(--olive-400);margin-top:14px">Title + description</p>
+  <div class="grid">
+    <button class="sel" type="button">
+      <span class="title">Allow</span>
+      <span class="desc-line">This user can always access the system.</span>
+      <span class="ind radio"><span class="dot"></span></span>
+    </button>
+    <button class="sel selected" type="button">
+      <span class="title">Deny</span>
+      <span class="desc-line">This user will be denied access to the system.</span>
+      <span class="ind radio"><span class="dot"></span></span>
+    </button>
+    <button class="sel" type="button">
+      <span class="title">Lock</span>
+      <span class="desc-line">This user will be locked out of the system.</span>
+      <span class="ind radio"><span class="dot"></span></span>
+    </button>
+  </div>
+
+  <p class="lbl-section" style="font-size:10px;color:var(--olive-400);margin-top:14px">Compact pill</p>
+  <div class="grid">
+    <button class="sel pill" type="button"><span class="title">Always allow</span><span class="ind radio"><span class="dot"></span></span></button>
+    <button class="sel pill selected" type="button"><span class="title">Deny access</span><span class="ind radio"><span class="dot"></span></span></button>
+    <button class="sel pill" type="button"><span class="title">Lock out</span><span class="ind radio"><span class="dot"></span></span></button>
+  </div>
+</div>
+
+<!-- Toggle cards -->
+<div class="group">
+  <p class="lbl-section">Toggle cards <span class="desc">— independent on/off · feature flags &amp; settings</span></p>
+
+  <p class="lbl-section" style="font-size:10px;color:var(--olive-400);margin-top:4px">Icon + title + description</p>
+  <div class="grid">
+    <button class="sel with-icon" type="button">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>
+      <span class="title">CSS support</span>
+      <span class="desc-line">Enable autocomplete and syntax highlight for CSS files.</span>
+      <span class="ind-toggle"></span>
+    </button>
+    <button class="sel with-icon" type="button">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 10a6 6 0 0 0-11.5-1.5A4.5 4.5 0 0 0 7 18h11a4 4 0 0 0 0-8z"/></svg>
+      <span class="title">Autosave in the cloud</span>
+      <span class="desc-line">Enable automatic backups to the cloud.</span>
+      <span class="ind-toggle"></span>
+    </button>
+    <button class="sel selected with-icon" type="button">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M9 14l2 2 4-4"/></svg>
+      <span class="title">Excel export</span>
+      <span class="desc-line">Allow users to export data to Excel files locally.</span>
+      <span class="ind-toggle"></span>
+    </button>
+  </div>
+
+  <p class="lbl-section" style="font-size:10px;color:var(--olive-400);margin-top:14px">Title + description</p>
+  <div class="grid">
+    <button class="sel" type="button">
+      <span class="title">CSS support</span>
+      <span class="desc-line">Enable autocomplete and syntax highlight for CSS files.</span>
+      <span class="ind-toggle"></span>
+    </button>
+    <button class="sel" type="button">
+      <span class="title">Autosave in the cloud</span>
+      <span class="desc-line">Enable automatic backups to the cloud.</span>
+      <span class="ind-toggle"></span>
+    </button>
+    <button class="sel selected" type="button">
+      <span class="title">Excel export</span>
+      <span class="desc-line">Allow users to export data to Excel files locally.</span>
+      <span class="ind-toggle"></span>
+    </button>
+  </div>
+
+  <p class="lbl-section" style="font-size:10px;color:var(--olive-400);margin-top:14px">Compact pill</p>
+  <div class="grid">
+    <button class="sel pill" type="button"><span class="title">CSS syntax support</span><span class="ind-toggle"></span></button>
+    <button class="sel pill" type="button"><span class="title">Autosave in the cloud</span><span class="ind-toggle"></span></button>
+    <button class="sel pill selected" type="button"><span class="title">Excel export</span><span class="ind-toggle"></span></button>
+  </div>
+</div>
+
+<script>
+  // Click to toggle visual selection (demo only)
+  document.querySelectorAll('.sel').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const grid = btn.parentElement;
+      // radios + toggles in radio rows are single-select; checkbox + toggles are individual.
+      // For simplicity in the demo: any card with .ind.radio is single-select within its grid.
+      if (btn.querySelector('.ind.radio')) {
+        grid.querySelectorAll('.sel').forEach(s => s.classList.remove('selected'));
+        btn.classList.add('selected');
+      } else {
+        btn.classList.toggle('selected');
+      }
+    });
+  });
+</script>
+
+</body></html>

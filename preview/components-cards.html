@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Cards</title>
+<link rel="stylesheet" href="../colors_and_type.css?v=20260428">
+<style>
+  body{margin:0;padding:22px 24px 96px;background:var(--bg);color:var(--fg);font-family:var(--font-sans)}
+  .note{font-size:12px;color:var(--olive-600);margin:0 0 18px;max-width:640px;line-height:1.55}
+  .note .tk{font-family:var(--font-sans);font-weight:500;color:var(--olive-800)}
+
+  .group{margin-bottom:28px}
+  .lbl{display:flex;align-items:baseline;gap:8px;font-family:var(--font-sans);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--olive-500);margin:0 0 12px}
+  .lbl .star{color:var(--gold-600);letter-spacing:0;font-size:13px}
+  .lbl .desc{letter-spacing:0;text-transform:none;font-size:12px;color:var(--olive-600);font-weight:400;font-family:var(--font-sans)}
+  .lbl .desc .tk{font-family:var(--font-sans);font-weight:500;color:var(--olive-800)}
+
+  /* Default card — the canonical surface */
+  .card{
+    background:var(--bg-card);
+    border-radius:var(--radius-2xl);
+    padding:20px;
+  }
+  .card h4{
+    font-family:var(--font-heading);font-weight:600;font-size:18px;
+    margin:0 0 6px;letter-spacing:-.01em;color:var(--olive-900);
+  }
+  .card p{margin:0;font-size:13px;line-height:1.55;letter-spacing:.005em;color:var(--olive-700)}
+  .meta{margin-top:14px;font-family:var(--font-sans);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--olive-500)}
+
+  /* Outlined card variant — white fill + subtle stroke */
+  .card.outlined{
+    background:#fff;
+    box-shadow:inset 0 0 0 1px var(--olive-200);
+  }
+
+  /* Numeric / data card */
+  .stat{display:flex;flex-direction:column;gap:4px}
+  .stat .num{font-family:var(--font-sans);font-weight:500;font-size:32px;letter-spacing:-.02em;color:var(--olive-900);}
+  .stat .num .delta{font-size:13px;color:var(--fern-700);margin-left:6px;font-weight:500;letter-spacing:0}
+  .stat .lbl-stat{font-size:13px;color:var(--olive-600);letter-spacing:.005em}
+
+  /* Nested-item card */
+  .nested-list{display:flex;flex-direction:column;gap:6px;margin-top:14px}
+  .nested-row{
+    display:flex;align-items:center;justify-content:space-between;
+    background:var(--surface-nested);
+    border-radius:var(--radius-md);
+    padding:10px 12px;
+  }
+  .nested-row .name{font-size:13px;color:var(--olive-800);letter-spacing:.005em}
+  .nested-row .val{font-family:var(--font-sans);font-size:13px;color:var(--olive-900);font-weight:500}
+
+  /* Layouts */
+  .row-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+  .row-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:start}
+</style></head><body>
+
+<p class="note">
+  Reva product UI is <strong>flat</strong>. Cards never elevate — they sit on the canvas at
+  <span class="tk">--bg-card</span> (hay-100), with no border and no shadow. Layering happens by
+  <em>blending</em> surfaces: a card on hay-50 canvas, with nested rows tinted by a transparent
+  hay-500 wash. An outlined variant (white fill + subtle olive-200 stroke) is available when the
+  card needs to read as a discrete object on busy ground.
+</p>
+
+<div class="group">
+  <p class="lbl">
+    Default card <span class="star">★</span>
+    <span class="desc">— <span class="tk">--bg-card</span> fill · no border · no shadow · radius-2xl</span>
+  </p>
+  <div class="row-2">
+    <div class="card">
+      <h4>Cash buffer healthy</h4>
+      <p>£42,150 across joint current and 2 savings accounts. Last reconciled this morning.</p>
+      <div class="meta">Workhorse surface</div>
+    </div>
+    <div class="card">
+      <h4>Suitability review due</h4>
+      <p>Three households are inside their 30-day review window. Two have been auto-prepared.</p>
+      <div class="meta">Inline action</div>
+    </div>
+  </div>
+</div>
+
+<div class="group">
+  <p class="lbl">
+    Outlined card
+    <span class="desc">— white fill · 1px <span class="tk">--olive-200</span> inset stroke · same radius</span>
+  </p>
+  <div class="row-2">
+    <div class="card outlined">
+      <h4>Quarterly statement ready</h4>
+      <p>Q1 2026 client pack is generated and waiting for your sign-off.</p>
+      <div class="meta">Discrete object on busy ground</div>
+    </div>
+    <div class="card outlined">
+      <h4>New mandate signed</h4>
+      <p>The Patel household onboarded yesterday. £640k across two SIPPs and a GIA.</p>
+      <div class="meta">Notification surface</div>
+    </div>
+  </div>
+</div>
+
+<div class="group">
+  <p class="lbl">Stat cards <span class="desc">— same default card with numeric content</span></p>
+  <div class="row-3">
+    <div class="card stat">
+      <div class="num">£18.4m <span class="delta">+2.1%</span></div>
+      <div class="lbl-stat">Assets under advice</div>
+    </div>
+    <div class="card stat">
+      <div class="num">142</div>
+      <div class="lbl-stat">Active households</div>
+    </div>
+    <div class="card stat">
+      <div class="num">£312k</div>
+      <div class="lbl-stat">Pension carry-forward, this tax year</div>
+    </div>
+  </div>
+</div>
+
+<div class="group">
+  <p class="lbl">Card with nested items <span class="desc">— <span class="tk">--surface-nested</span> blends warmth from the card</span></p>
+  <div class="card" style="max-width:520px">
+    <h4>Smith household — accounts</h4>
+    <p>Five accounts across two providers. All reconciled at 06:00.</p>
+    <div class="nested-list">
+      <div class="nested-row"><span class="name">Joint current — Lloyds</span><span class="val">£12,840</span></div>
+      <div class="nested-row"><span class="name">Cash ISA — Marcus</span><span class="val">£24,100</span></div>
+      <div class="nested-row"><span class="name">SIPP — AJ Bell</span><span class="val">£186,420</span></div>
+      <div class="nested-row"><span class="name">GIA — AJ Bell</span><span class="val">£62,880</span></div>
+      <div class="nested-row"><span class="name">Premium Bonds</span><span class="val">£18,500</span></div>
+    </div>
+    <div class="meta">5 accounts · refreshed 06:00</div>
+  </div>
+</div>
+
+</body></html>
