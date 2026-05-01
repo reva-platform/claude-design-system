@@ -2,6 +2,35 @@
 
 A working design system for **Reva** — distilled from the production codebases at `reva-platform/reva-apps`, `fabriziocuscini/reva-website`, and `fabriziocuscini/reva-custom`.
 
+## Using this in Claude Design
+
+This repo is the canonical Reva design system. To start a new design project against it:
+
+1. Open Claude Design → **New project** → **Import from GitHub**
+2. Pick `reva-platform/claude-design-system` (you'll need read access on GitHub —
+   ask the maintainer to add you as a collaborator if it's private)
+3. Once imported, the repo's `SKILL.md` will activate automatically when you ask
+   Claude for anything Reva-branded — fonts, tokens, voice, and component
+   patterns are all available out of the box
+
+### Prompting tips
+
+- For brand-correct work: just ask. The skill loads context from `README.md`
+  and `colors_and_type.css` automatically.
+- To pin specific references in a prompt, mention them by path:
+  `colors_and_type.css`, `ui_kits/website/UI Kit — Marketing.html`,
+  `ui_kits/advisor-portal/UI Kit — Advisor Portal.html`.
+- The `preview/` folder is a visual index — every token, component variant,
+  and brand element rendered. Browse it in the Design System tab.
+- Keep the `<link rel="stylesheet" href="path/to/colors_and_type.css">` import
+  on every prototype HTML file. That single import gives you fonts + tokens.
+
+### Keeping in sync
+
+This repo is the source of truth. If your design project diverges from it
+(new components, token tweaks), open a PR back to `main` so the rest of the
+team — and future prototypes — pick up the change.
+
 ## What Reva is
 
 Reva is **the intelligent financial account for modern wealth** — a client-owned, adviser-governed account that runs a household's financial life as one. Cash, credit, FX, and investments operate through the same account, coordinated by a deterministic orchestration engine against the household's goals and constraints.
